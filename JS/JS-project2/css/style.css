@@ -1,0 +1,272 @@
+:root {
+  --primary: #008996;
+  --primary-darker: #00555d;
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.app-header {
+  background-color: var(--primary);
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.container {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.display-none {
+  display: none !important;
+}
+
+.form-section {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgb(15 23 42 / 45%);
+  backdrop-filter: blur(6px);
+}
+
+.form-dialog {
+  position: relative;
+  width: min(100%, 520px);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 20px 50px rgb(15 23 42 / 25%);
+}
+
+.form-dialog h2 {
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+
+.close-form-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close-form-btn:hover {
+  color: var(--text);
+}
+
+#eventForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+#eventForm input,
+#eventForm select,
+#eventForm button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+}
+
+
+#eventForm input {
+  flex: 1 1 60%;
+}
+
+#eventForm select {
+  flex: 1 1 20%;
+}
+
+#eventForm button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1.25rem;
+}
+
+#eventForm button:hover {
+  background-color: var(--primary-darker);
+}
+
+.message {
+  margin-top: 0.75rem;
+  min-height: 1.25rem;
+  font-size: 0.875rem;
+}
+
+.message.error {
+  color: #dc2626;
+}
+
+.message.success {
+  color: #16a34a;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.filter-section {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.event-list h2 {
+  margin-bottom: 1rem;
+}
+
+.event-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.event-list button{
+  padding: 0.5rem 1rem;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.event-list button:hover {
+  background-color: var(--primary-darker);
+}
+
+.event-card {
+  background: var(--card-bg);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.date-upcoming {
+  border-left: 5px solid #21e4f6;
+}
+
+.date-past {
+  border-left: 5px solid #cc0000;
+}
+
+.date-today {
+  border-left: 5px solid #3ef63b;
+}
+
+.event-actions, .event-status {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.event-actions button, .event-status button {
+  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.complete-btn {
+  background-color: #1da850 !important;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #d42b2b !important;
+  color: white;
+}
+
+.attended-btn, .cancelled-btn {
+  background-color: #0a036e !important;
+  color: white;
+}
+
+.empty-state {
+  color: var(--muted);
+  text-align: center;
+  padding: 2rem;
+}
+
+@media (max-width: 480px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  #eventForm input,
+  #eventForm select,
+  #eventForm button {
+    flex: 1 1 100%;
+  }
+}
