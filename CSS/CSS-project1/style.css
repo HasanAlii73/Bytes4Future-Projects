@@ -58,9 +58,15 @@ button:hover{
 #nav-bar {
   background-color: var(--color-bg);
   display: flex;
+  position: fixed;
+  width: 98%;
+  height: 15px;
   justify-content: space-between;
   align-items: center;
   padding: 30px;
+  background-color: var(--color-bg);
+  z-index: 100;                           
+  box-sizing: border-box; 
 }
 
 .header-navs {
@@ -121,9 +127,110 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 5vw;
+  margin-block: 15px;
 }
 
+.widgetContainer {
+  position: relative;
+  width: 400px;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.glowEffect {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(147, 196, 253, 0.12) 0%, rgba(147, 197, 253, 0) 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heroImage {
+  position: relative;
+  width: 320px;
+  background-color: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+  transform: rotate(3deg);
+  z-index: 2;
+}
+
+.codeImage {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.red { background-color: #ef4444; }
+.yellow { background-color: #f59e0b; }
+.green { background-color: #10b981; }
+
+.window-body pre {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #9ca3af;
+}
+
+.keyword { color: #f43f5e; font-weight: bold; }
+.string { color: #38bdf8; }
+.comment { color: #6b7280; font-style: italic; }
+
+.badge {
+  position: absolute;
+  background-color: #ffffff;
+  color: #1f2937;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+}
+
+.badge-icon {
+  font-size: 9px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: white;
+}
+
+.html-color { background-color: #ea580c; }
+.css-color { background-color: #2563eb; }
+.js-color { background-color: #ca8a04; color: black; }
+
+.badge-html {
+  top: 10%;
+  right: -5%;
+}
+
+.badge-css {
+  bottom: 12%;
+  right: 0%;
+}
+
+.badge-js {
+  bottom: 25%;
+  left: -5%;
+}
 
 /* About me */
 .about-me-content {
