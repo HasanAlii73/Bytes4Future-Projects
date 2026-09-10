@@ -1,9 +1,9 @@
 const appName = "EventHorizon";
 
 let events = [
-  { title: "Buy groceries", location: "Supermarket", date: new Date("2023-10-15"), category: "home", completed: false, status: "pending" },
-  { title: "Friend's birthday party", location: "Home", date: new Date("2026-10-20"), category: "social", completed: false, status: "pending" },
-  { title: "Team meeting", location: "Office", date: new Date("2026-9-5"), category: "work", completed: true, status: "pending" }
+  { title: "Buy groceries", location: "Supermarket", date: new Date("2023-10-15"), category: "personal", status: "pending" },
+  { title: "Friend's birthday party", location: "Home", date: new Date("2026-10-20"), category: "social", status: "pending" },
+  { title: "Team meeting", location: "Office", date: new Date("2026-9-5"), category: "work", status: "pending" }
 ];
 
 let stats = calculateStats(events);
@@ -13,14 +13,21 @@ const addEventBtn = document.querySelector(".add-event-btn");
 const formSection = document.querySelector(".form-section");
 const closeFormBtn = document.querySelector(".close-form-btn");
 const submitEventBtn = document.querySelector("#eventForm button[type='submit']");
+const themeToggle = document.getElementById("theme-toggle");
 
-addEventBtn.addEventListener("click", function () {
+themeToggle.addEventListener("click", function () {
+  document.body.classList.toggle("dark-mode");
+});
+
+function formListeners() {
+  addEventBtn.addEventListener("click", function () {
   formSection.classList.remove("display-none");
 });
 
 closeFormBtn.addEventListener("click", function () {
   formSection.classList.add("display-none");
 });
+
 
 submitEventBtn.addEventListener("click", function (event) {
   event.preventDefault();
@@ -35,17 +42,11 @@ submitEventBtn.addEventListener("click", function (event) {
   const date = dateInput.value;
   const category = categoryInput.value;
 
-  if (title === "" || location === "" || date === "") {
-    alert("Please fill in all required fields.");
+  if (!validateInput(title, location, date)) {
     return;
   }
 
-  if (date < new Date().toISOString().split("T")[0]) {
-    alert("Please select a valid date.");
-    return;
-  }
-
-  events.push({ title, location, date, category, completed: false });
+  events.push({ title, location, date, category, status: "pending" });
   titleInput.value = "";
   locationInput.value = "";
   dateInput.value = "";
@@ -54,8 +55,23 @@ submitEventBtn.addEventListener("click", function (event) {
   formSection.classList.add("display-none");
   refreshApp();
 });
+}
 
-function getDateClass(eventDate) {
+function validateInput(title, location, date) {
+  if (title === "" || location === "" || date === "") {
+    alert("Please fill in all required fields.");
+    return false;
+  }
+
+  if (date < new Date().toISOString().split("T")[0]) {
+    alert("Please select a valid date.");
+    return false;
+  }
+
+  return true;
+}
+
+function getDate(eventDate) {
   const selectedDate = new Date(eventDate);
   const today = new Date();
 
@@ -71,6 +87,14 @@ function getDateClass(eventDate) {
   }
 }
 
+function countDaysToGo(eventDate) {
+  const today = new Date();
+  const selectedDate = new Date(eventDate);
+  const timeDiff = selectedDate - today;
+  const daysToGo = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  return daysToGo < 0 ? "event has ended" : `${daysToGo} days to go`;
+}
+
 function renderEvents(eventsToRender = events) {
   const eventListContainer = document.querySelector("#eventList");
   eventListContainer.innerHTML = "";
@@ -84,17 +108,25 @@ function renderEvents(eventsToRender = events) {
     const index = events.indexOf(event);
     const eventCard = document.createElement("div");
 
-    const dateClass = getDateClass(event.date);
+    const dateClass = getDate(event.date);
+    const daysToGo = countDaysToGo(event.date);
+
 
     eventCard.className = `event-card ${dateClass}`;
     eventCard.innerHTML = `
-      <h3>${event.title}</h3>
+      <div class="event-header">
+        <h3>${event.title}</h3>
+        <p style="font-size: 0.9rem;">${daysToGo}</p>
+      </div>
       <p>Location: ${event.location}</p>
       <p>Date: ${new Date(event.date).toLocaleDateString()}</p>
       <p>Category: ${event.category}</p>
+      <p>Location: ${event.location}</p>
       <p class="event-status">Status: ${event.status || "Pending"}</p>
-      <div class="event-actions">
-        <button class="delete-btn" data-index="${index}">Delete</button>
+      <div class="event-buttons">
+        <div class="event-actions">
+          <button class="delete-btn" data-index="${index}">Delete</button>
+        </div>
       </div>
     `;
 
@@ -108,8 +140,9 @@ function renderEvents(eventsToRender = events) {
     }
   });
 
+  
+  formListeners();
   updateStatsDisplay(stats);
-
   attachEventButtonListeners();
 }
 
@@ -117,6 +150,7 @@ function attachEventButtonListeners() {
   const deleteButtons = document.querySelectorAll(".delete-btn");
   const attendedButtons = document.querySelectorAll(".attended-btn");
   const cancelledButtons = document.querySelectorAll(".cancelled-btn");
+  const editButtons = document.querySelectorAll(".edit-btn");
 
   deleteButtons.forEach(button => {
     button.addEventListener("click", handleDelete);
@@ -129,6 +163,7 @@ function attachEventButtonListeners() {
   cancelledButtons.forEach(button => {
     button.addEventListener("click", handleCancelled);
   });
+
 }
 
 function handleDelete(event) {
@@ -192,14 +227,18 @@ function getFilteredEvents(filterType) {
   if (filterType === "date-all") {
     filteredEvents = events;
   }
-  else{
+  else if(filterType === "date-today" || filterType === "date-past" || filterType === "date-upcoming") {
     filteredEvents = events.filter(function (event) {
-      return getDateClass(event.date) === filterType;
+      return getDate(event.date) === filterType;
+    });
+  }
+  else if(filterType.startsWith("cat-")) {
+    filteredEvents = events.filter(function (event) {
+      return event.category === filterType.substring(4);
     });
   }
 
   return sortEventsByDate(filteredEvents);
-  console.log(`Filtered events for ${filterType}:`, filteredEvents);
 }
 
 function updateFilterButtons(activeFilter) {
@@ -227,6 +266,14 @@ function sortEventsByDate(eventsList) {
   return [...eventsList].sort((a, b) => new Date(a.date) - new Date(b.date));
 }
 
-renderEvents(getFilteredEvents(currentFilter));
+const searchInput = document.getElementById("searchInput");
 
-console.log(`${appName} loaded with ${events.length} events.`);
+searchInput.addEventListener("input", function () {
+  const searchTerm = searchInput.value.toLowerCase();
+  const filteredEvents = events.filter(event => {
+    return event.title.toLowerCase().includes(searchTerm) || event.location.toLowerCase().includes(searchTerm);
+  });
+  renderEvents(filteredEvents);
+});
+
+renderEvents(getFilteredEvents(currentFilter)); 
