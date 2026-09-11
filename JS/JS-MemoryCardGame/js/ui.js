@@ -19,9 +19,9 @@ function startPage () {
             document.getElementById('username-display').textContent = name;
             userName = name;
 
+            renderCards();
             restartGame ();
             backToMainMenu ();
-            renderCards();
         } else {
             nameInput.style.borderColor = 'red';
         }
@@ -30,10 +30,11 @@ function startPage () {
 
 function restartGame () {
     document.getElementById('restart-button').addEventListener('click', function () {
-        document.getElementById('game-board').innerHTML = '';
+        // document.getElementById('game-board').innerHTML = '';
+        console.log('Restarting game...');
         document.getElementById('timer').textContent = 'Time: 0s';
         document.getElementById('moves').textContent = 'Moves: 0';
-        startPage();
+        renderCards();
     });
 }
 
