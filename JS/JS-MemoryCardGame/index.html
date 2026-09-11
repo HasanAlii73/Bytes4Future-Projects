@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Card Game</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <section id="start-screen">
+      <h1>Memory Card Game</h1>
+      <div id="username-input">
+          <input type="text" id="username" placeholder="Enter your username..." />
+          <button id="start-button">Start</button>
+      </div>
+      <p id="rules">
+        Clicking a card flips it and reveals the image/symbol, Clicking a
+        second card: - If they match → both cards stay open - If they do not
+        match → both cards flip back, The game continues until all pairs are
+        found.
+      </p>
+    </section>
+
+    <section id="game-screen" class="hidden">
+      <div id="game-info">
+        <span id="username-display"></span>
+        <span id="timer">Time: 0s</span>
+        <span id="moves">Moves: 0</span>
+      </div>
+      <div id="game-board"></div>
+    </section>
+
+    <script src="js/game.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+  </body>
+</html>

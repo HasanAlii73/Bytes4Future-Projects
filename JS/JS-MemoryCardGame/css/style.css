@@ -1,0 +1,71 @@
+:root {
+    --primary-color: #52014c;
+    --secondary-color: #f8ef03;
+    --font-color: #390034;
+    --background-color: #f4f4f4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--font-color);
+    line-height: 1.6;
+}
+
+#start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+#start-screen h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+#start-screen p {
+    margin-top: 70px;
+    width: 50%;
+}
+
+#username-input {
+    padding: 20px;
+    font-size: 16px;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--primary-color);
+}
+
+#start-button {
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#username {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
