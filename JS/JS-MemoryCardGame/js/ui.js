@@ -1,4 +1,4 @@
-import { getCards, flipCard, startTimer } from './game.js';
+import { getCards, flipCard, resetGameState } from './game.js';
 let userName = '';
 
 function validateName(name) {
@@ -22,7 +22,6 @@ function startPage() {
             renderCards();
             restartGame();
             backToMainMenu();
-            startTimer();
         } else {
             nameInput.style.borderColor = 'red';
         }
@@ -31,8 +30,8 @@ function startPage() {
 
 function restartGame() {
     document.getElementById('restart-button').addEventListener('click', function () {
+        resetGameState();
         document.getElementById('timer').textContent = 'Time: 0 s';
-        startTimer();
         document.getElementById('moves').textContent = 'Moves: 0';
         renderCards();
     });
@@ -63,7 +62,5 @@ function renderCards() {
         gameBoard.appendChild(cardElement);
     });
 }
-
-
 
 startPage();

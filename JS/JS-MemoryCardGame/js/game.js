@@ -7,8 +7,18 @@ let seconds = 0;
 
 function startGame() {
     const cardValues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    resetGameState();
     cards = [...cardValues, ...cardValues];
     shuffleCards();
+}
+
+function resetGameState() {
+    clearInterval(timer);
+    timer = null;
+    flippedCards = [];
+    matchedPairs = 0;
+    moves = 0;
+    seconds = 0;
 }
 
 function getCards() {
@@ -24,6 +34,9 @@ function shuffleCards() {
 }
 
 function flipCard(event) {
+    if (!timer) {
+        timer = startTimer();
+    }
     const card = event.currentTarget;
     if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
         card.classList.add('flipped');
@@ -32,6 +45,7 @@ function flipCard(event) {
             moves++;
             document.getElementById('moves').textContent = `Moves: ${moves}`;
             checkForMatch();
+            console.log(`moves = ${moves}`); // to delete   
         }
     }
 }
@@ -57,7 +71,7 @@ function checkForMatch() {
 function startTimer() {
     const timerElement = document.getElementById('timer');
     seconds = 0;
-    const timer = setInterval(() => {
+    timer = setInterval(() => {
         seconds++;
         timerElement.textContent = `Time: ${seconds} s`;
     }, 1000);
@@ -65,4 +79,4 @@ function startTimer() {
     return timer;
 }
 
-export { getCards, flipCard, startTimer };
+export { getCards, flipCard, startTimer, resetGameState };
