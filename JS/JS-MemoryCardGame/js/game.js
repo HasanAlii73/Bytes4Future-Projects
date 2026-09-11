@@ -3,15 +3,12 @@ let flippedCards = [];
 let matchedPairs = 0;
 let moves = 0;
 let timer;
-let timeElapsed = 0;
+let seconds = 0;
 
 function startGame() {
     const cardValues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     cards = [...cardValues, ...cardValues];
     shuffleCards();
-    // renderCards();
-    // resetGameStats();
-    // startTimer();
 }
 
 function getCards() {
@@ -46,7 +43,7 @@ function checkForMatch() {
         flippedCards = [];
         if (matchedPairs === cards.length / 2) {
             clearInterval(timer);
-            alert(`Congratulations! You've completed the game in ${timeElapsed} seconds and ${moves} moves.`);
+            alert(`Congratulations! You've completed the game in ${seconds} seconds and ${moves} moves.`);
         }
     } else {
         setTimeout(() => {
@@ -57,4 +54,15 @@ function checkForMatch() {
     }
 }
 
-export { getCards, flipCard };
+function startTimer() {
+    const timerElement = document.getElementById('timer');
+    seconds = 0;
+    const timer = setInterval(() => {
+        seconds++;
+        timerElement.textContent = `Time: ${seconds} s`;
+    }, 1000);
+
+    return timer;
+}
+
+export { getCards, flipCard, startTimer };

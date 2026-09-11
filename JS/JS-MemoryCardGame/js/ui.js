@@ -1,14 +1,14 @@
-import { getCards, flipCard } from './game.js';
+import { getCards, flipCard, startTimer } from './game.js';
 let userName = '';
 
-function validateName (name) {
+function validateName(name) {
     if (name.length < 2) {
         return false;
     }
     return true;
 }
 
-function startPage () {
+function startPage() {
     const nameInput = document.getElementById('username');
     document.getElementById('start-button').addEventListener('click', function () {
         const name = nameInput.value;
@@ -20,25 +20,25 @@ function startPage () {
             userName = name;
 
             renderCards();
-            restartGame ();
-            backToMainMenu ();
+            restartGame();
+            backToMainMenu();
+            startTimer();
         } else {
             nameInput.style.borderColor = 'red';
         }
     });
 }
 
-function restartGame () {
+function restartGame() {
     document.getElementById('restart-button').addEventListener('click', function () {
-        // document.getElementById('game-board').innerHTML = '';
-        console.log('Restarting game...');
-        document.getElementById('timer').textContent = 'Time: 0s';
+        document.getElementById('timer').textContent = 'Time: 0 s';
+        startTimer();
         document.getElementById('moves').textContent = 'Moves: 0';
         renderCards();
     });
 }
 
-function backToMainMenu () {
+function backToMainMenu() {
     document.getElementById('back-to-main-menu-button').addEventListener('click', function () {
         document.getElementById('game-screen').classList.add('hidden');
         document.getElementById('start-screen').classList.remove('hidden');
@@ -51,7 +51,7 @@ function renderCards() {
     const gameBoard = document.getElementById('game-board');
     gameBoard.innerHTML = '';
     const cards = getCards();
-    
+
     console.log(cards); // to delete
 
     cards.forEach((value, index) => {
@@ -63,5 +63,7 @@ function renderCards() {
         gameBoard.appendChild(cardElement);
     });
 }
+
+
 
 startPage();
