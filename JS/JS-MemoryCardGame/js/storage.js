@@ -26,4 +26,10 @@ function getTop5Scores() {
     return JSON.parse(localStorage.getItem('memoryGameTop5Scores')) || [];
 }
 
-export { saveScore, saveUserName, getUserName, saveTop5Scores, getTop5Scores };
+function clearAllScores() {
+    localStorage.removeItem('memoryGameTop5Scores');
+    localStorage.removeItem('memoryGameUserName');
+    localStorage.removeItem('memoryGameScore');
+}
+
+export { saveScore, saveUserName, getUserName, saveTop5Scores, getTop5Scores, clearAllScores };

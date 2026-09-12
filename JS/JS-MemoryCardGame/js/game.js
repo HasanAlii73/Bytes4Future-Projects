@@ -9,8 +9,7 @@ let userName = '';
 import { saveTop5Scores, getTop5Scores } from './storage.js';
 
 function startGame() {
-    // const cardValues = ['🐶', '🐱', '🐭', '🐹', '🐶', '🐱', '🐭', '🐹'];
-    const cardValues = ['🐶', '🐱'];
+    const cardValues = ['🐶', '🐱', '🐭', '🐹', '🐶', '🐱', '🐭', '🐹'];
     resetGameState();
     cards = [...cardValues, ...cardValues];
     shuffleCards();

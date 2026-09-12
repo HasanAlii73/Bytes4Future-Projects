@@ -273,3 +273,17 @@ button:hover {
 #top-scores-table td:last-child {
     text-align: center;
 }
+
+#clear-records-button {
+    margin-top: 50px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border: none;
+    border-radius: 5px;
+}
+
+#clear-records-button:hover {
+    background-color: var(--primary-darker-color);
+}

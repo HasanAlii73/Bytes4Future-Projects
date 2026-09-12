@@ -1,5 +1,5 @@
 import { getCards, flipCard, resetGameState } from './game.js';
-import { saveScore, saveUserName, getUserName } from './storage.js';
+import { saveScore, saveUserName, getUserName, clearAllScores } from './storage.js';
 let userName = '';
 
 function validateName(name) {
@@ -27,6 +27,7 @@ function startPage() {
             resetGameState(userName);
             handleRestartGameButton();
             handleGameOverButtons();
+            handleGameScreenButtons();
             handleBackToMainMenuButton();
             saveUserName(name);
         } else {
@@ -42,6 +43,12 @@ function restartGame() {
     renderCards();
 }
 
+function handleGameScreenButtons() {
+    handleRestartGameButton();
+    handleBackToMainMenuButton();
+    handleClearRecordsButton();
+}
+
 function handleRestartGameButton() {
     document.getElementById('restart-button').addEventListener('click', function () {
         restartGame();
@@ -51,6 +58,15 @@ function handleRestartGameButton() {
 function handleBackToMainMenuButton() {
     document.getElementById('back-to-main-menu-button').addEventListener('click', function () {
         backToMainMenu();
+    });
+}
+
+function handleClearRecordsButton() {
+    document.getElementById('clear-records-button').addEventListener('click', function () {
+        if (confirm('Are you sure you want to clear all records?')) {
+            clearAllScores();
+            // leaderBoardRender();
+        }
     });
 }
 
