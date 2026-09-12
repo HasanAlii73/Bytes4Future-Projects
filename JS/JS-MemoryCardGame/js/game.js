@@ -4,25 +4,31 @@ let matchedPairs = 0;
 let moves = 0;
 let timer;
 let seconds = 0;
+let userName = '';
+
+import { saveTop5Scores, getTop5Scores } from './storage.js';
 
 function startGame() {
-    const cardValues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    // const cardValues = ['🐶', '🐱', '🐭', '🐹', '🐶', '🐱', '🐭', '🐹'];
+    const cardValues = ['🐶', '🐱'];
     resetGameState();
     cards = [...cardValues, ...cardValues];
     shuffleCards();
 }
 
-function resetGameState() {
+function resetGameState(userName) {
     clearInterval(timer);
     timer = null;
     flippedCards = [];
     matchedPairs = 0;
     moves = 0;
     seconds = 0;
+    userName = userName || '';
 }
 
-function getCards() {
+function getCards(name) {
     startGame();
+    userName = name || '';
     return cards;
 }
 
@@ -45,7 +51,6 @@ function flipCard(event) {
             moves++;
             document.getElementById('moves').textContent = `Moves: ${moves}`;
             checkForMatch();
-            console.log(`moves = ${moves}`); // to delete   
         }
     }
 }
@@ -54,10 +59,11 @@ function checkForMatch() {
     const [card1, card2] = flippedCards;
     if (card1.dataset.value === card2.dataset.value) {
         matchedPairs++;
+        card1.classList.add('matched');
+        card2.classList.add('matched');
         flippedCards = [];
         if (matchedPairs === cards.length / 2) {
-            clearInterval(timer);
-            alert(`Congratulations! You've completed the game in ${seconds} seconds and ${moves} moves.`);
+            endGame();
         }
     } else {
         setTimeout(() => {
@@ -73,10 +79,39 @@ function startTimer() {
     seconds = 0;
     timer = setInterval(() => {
         seconds++;
-        timerElement.textContent = `Time: ${seconds} s`;
+        let minutes = Math.floor(seconds / 60);
+        let remainingSeconds = seconds % 60;
+        timerElement.textContent = `Time: ${minutes.toString().padStart(2, '0')} : ${remainingSeconds.toString().padStart(2, '0')}`;
     }, 1000);
 
     return timer;
+}
+
+function endGame() {
+    clearInterval(timer);
+    document.getElementById('game-over-screen').classList.remove('hidden');
+    document.getElementById('final-time').textContent = `Time: ${Math.floor(seconds / 60).toString().padStart(2, '0')} : ${(seconds % 60).toString().padStart(2, '0')}`;
+    document.getElementById('final-moves').textContent = `Moves: ${moves}`;
+    let score = {userName: userName, time: seconds, moves: moves};
+    saveTop5Scores(score);
+    leaderBoardRender();
+}
+
+function leaderBoardRender() {
+    const topScores = getTop5Scores();
+    const topScoresList = document.getElementById('top-scores-list');
+    topScoresList.innerHTML = '';
+    topScores.forEach((score, index) => {
+        const row = document.createElement('tr');
+        const time = `${Math.floor(score.time / 60).toString().padStart(2, '0')} : ${(score.time % 60).toString().padStart(2, '0')}`;
+        row.innerHTML = `
+            <th scope="row">${index + 1}</th>
+            <td>${score.userName}</td>
+            <td>${time}</td>
+            <td>${score.moves}</td>
+        `;
+        topScoresList.appendChild(row);
+    });
 }
 
 export { getCards, flipCard, startTimer, resetGameState };

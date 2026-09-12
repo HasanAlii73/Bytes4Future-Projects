@@ -4,6 +4,7 @@
     --secondary-color: #f8ef03;
     --font-color: #390034;
     --background-color: #f4f4f4;
+    --background-matched-color: #37c407;
 }
 
 * {
@@ -158,6 +159,12 @@ button:hover {
     transform: rotateY(180deg);
 }
 
+.matched {
+    background-color: var(--background-matched-color) !important;
+    color: var(--background-color);
+    cursor: default;
+}
+
 #game-buttons {
     display: flex;
     gap: 10px;
@@ -166,4 +173,103 @@ button:hover {
 #game-buttons button {
     flex: 1;
     min-width: 160px;
+}
+
+#game-over-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px;
+    text-align: center;
+    background-color: rgb(57 0 52 / 45%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+#game-over-screen h1,
+#game-over-screen p,
+#game-over-screen > div {
+    position: relative;
+    z-index: 1;
+}
+
+#game-over-screen h1 {
+    color: var(--secondary-color);
+    font-size: 2.5rem;
+}
+
+#game-over-screen p {
+    color: var(--background-color);
+    font-size: 1.2rem;
+}
+
+#game-over-screen > div {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#game-over-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#game-over-buttons button {
+    flex: 1;
+    min-width: 160px;
+}
+
+#Leaderboard {
+    width: min(100%, 520px);
+    margin-top: 12px;
+    padding: 16px;
+    color: var(--font-color);
+    background-color: var(--background-color);
+    border-radius: 6px;
+}
+
+#Leaderboard h2 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    text-align: left;
+}
+
+#top-scores-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+#top-scores-table th,
+#top-scores-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgb(82 1 76 / 20%);
+}
+
+#top-scores-table thead {
+    color: var(--background-color);
+    background-color: var(--primary-color);
+}
+
+#top-scores-table thead th {
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+#top-scores-table tbody tr:last-child th,
+#top-scores-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#top-scores-table th:first-child,
+#top-scores-table td:first-child,
+#top-scores-table th:last-child,
+#top-scores-table td:last-child {
+    text-align: center;
 }
