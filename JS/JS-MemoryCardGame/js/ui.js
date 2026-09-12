@@ -2,6 +2,27 @@ import { getCards, flipCard, resetGameState } from './game.js';
 import { saveScore, saveUserName, getUserName, clearAllScores } from './storage.js';
 let userName = '';
 
+function handleThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('memory-game-theme');
+    const isDarkMode = savedTheme === 'dark';
+
+    document.body.classList.toggle('dark-mode', isDarkMode);
+    updateThemeToggle(themeToggle, isDarkMode);
+
+    themeToggle.addEventListener('click', function () {
+        const darkModeEnabled = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('memory-game-theme', darkModeEnabled ? 'dark' : 'light');
+        updateThemeToggle(themeToggle, darkModeEnabled);
+    });
+}
+
+function updateThemeToggle(themeToggle, isDarkMode) {
+    themeToggle.textContent = isDarkMode ? 'Light mode' : 'Dark mode';
+    themeToggle.setAttribute('aria-label', `Switch to ${isDarkMode ? 'light' : 'dark'} mode`);
+    themeToggle.setAttribute('aria-pressed', isDarkMode.toString());
+}
+
 function validateName(name) {
     if (name.length < 2) {
         return false;
@@ -11,6 +32,7 @@ function validateName(name) {
 
 function startPage() {
     const nameInput = document.getElementById('username');
+    const difficultySelect = document.getElementById('difficulty');
     if (getUserName()) {
         nameInput.value = getUserName();
     }
@@ -23,7 +45,7 @@ function startPage() {
             document.getElementById('username-display').textContent = name;
             userName = name;
 
-            renderCards();
+            renderCards(difficultySelect.value);
             resetGameState(userName);
             handleRestartGameButton();
             handleGameOverButtons();
@@ -65,7 +87,6 @@ function handleClearRecordsButton() {
     document.getElementById('clear-records-button').addEventListener('click', function () {
         if (confirm('Are you sure you want to clear all records?')) {
             clearAllScores();
-            // leaderBoardRender();
         }
     });
 }
@@ -84,10 +105,11 @@ function backToMainMenu() {
     }
 }
 
-function renderCards() {
+
+function renderCards(difficulty) {
     const gameBoard = document.getElementById('game-board');
     gameBoard.innerHTML = '';
-    const cards = getCards(userName);
+    const cards = getCards(userName, difficulty);
 
     console.log(cards); // to delete
 
@@ -124,4 +146,5 @@ function handleGameOverButtons() {
 
 
 
+handleThemeToggle();
 startPage();

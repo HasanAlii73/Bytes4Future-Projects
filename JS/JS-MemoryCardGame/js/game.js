@@ -8,8 +8,21 @@ let userName = '';
 
 import { saveTop5Scores, getTop5Scores } from './storage.js';
 
-function startGame() {
-    const cardValues = ['🐶', '🐱', '🐭', '🐹', '🐶', '🐱', '🐭', '🐹'];
+function startGame(difficulty) {
+    let cardValues;
+    switch (difficulty) {
+        case 'easy':
+            cardValues = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊'];
+            break;
+        case 'medium':
+            cardValues = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+            break;
+        case 'hard':
+            cardValues = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯'];
+            break;
+        default:
+            cardValues = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+    }
     resetGameState();
     cards = [...cardValues, ...cardValues];
     shuffleCards();
@@ -25,8 +38,8 @@ function resetGameState(userName) {
     userName = userName || '';
 }
 
-function getCards(name) {
-    startGame();
+function getCards(name, difficulty) {
+    startGame(difficulty);
     userName = name || '';
     return cards;
 }

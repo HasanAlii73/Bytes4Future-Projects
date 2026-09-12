@@ -7,11 +7,20 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <button id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      Dark mode
+    </button>
+
     <section id="start-screen">
       <h1>Memory Card Game</h1>
       <div id="username-input">
         <input type="text" id="username" placeholder="Enter your username..." />
         <button id="start-button">Start</button>
+        <select name="difficulty" id="difficulty">
+          <option value="easy" selected>Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
       </div>
       <p id="rules">
         Rules: <br />Clicking a card flips it and reveals the image/symbol,<br />

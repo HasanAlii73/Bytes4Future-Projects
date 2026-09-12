@@ -7,6 +7,15 @@
     --background-matched-color: #37c407;
 }
 
+body.dark-mode {
+    --primary-color: #d58ad0;
+    --primary-darker-color: #b86ab2;
+    --secondary-color: #f8ef03;
+    --font-color: #f6e8f4;
+    --background-color: #1e1720;
+    --background-matched-color: #54b83b;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -22,6 +31,22 @@ body {
     background-color: var(--background-color);
     color: var(--font-color);
     line-height: 1.6;
+}
+
+#theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 20;
+    padding: 8px 12px;
+    border: 2px solid var(--primary-color);
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+#theme-toggle:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
 }
 
 button {
@@ -286,4 +311,24 @@ button:hover {
 
 #clear-records-button:hover {
     background-color: var(--primary-darker-color);
+}
+
+#difficulty {
+    margin-top: 20px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+}
+
+#difficulty option:focus {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+#difficulty option:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
 }
