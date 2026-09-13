@@ -1,6 +1,7 @@
 import { getCards, flipCard, resetGameState } from './game.js';
 import { saveScore, saveUserName, getUserName, clearAllScores } from './storage.js';
 let userName = '';
+let currDifficulty = 'medium';
 
 function handleThemeToggle() {
     const themeToggle = document.getElementById('theme-toggle');
@@ -82,7 +83,7 @@ function restartGame() {
     resetGameState();
     document.getElementById('timer').textContent = 'Time: 00 : 00';
     document.getElementById('moves').textContent = 'Moves: 0';
-    renderCards();
+    renderCards(currDifficulty);
 }
 
 function handleGameScreenButtons() {
@@ -115,21 +116,20 @@ function backToMainMenu() {
     document.getElementById('game-screen').classList.add('hidden');
     document.getElementById('start-screen').classList.remove('hidden');
     document.getElementById('game-over-screen').classList.add('hidden');
+    document.getElementById('timer').textContent = 'Time: 00 : 00';
+    document.getElementById('moves').textContent = 'Moves: 0';
     if (getUserName()) {
-        nameInput.value = getUserName();
         userName = getUserName();
-    }
-    else {
-        document.getElementById('username').value = '';
-        userName = '';
+        resetGameState(userName);
+        renderCards();
     }
 }
-
 
 function renderCards(difficulty) {
     const gameBoard = document.getElementById('game-board');
     gameBoard.innerHTML = '';
     const cards = getCards(userName, difficulty);
+    currDifficulty = difficulty;
 
     console.log(cards); // to delete
 
