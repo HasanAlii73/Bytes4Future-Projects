@@ -8,6 +8,13 @@ let userName = '';
 
 import { saveTop5Scores, getTop5Scores } from './storage.js';
 
+const sounds = {
+    flip: new Audio('media/sounds/flip.mp3'),
+    match: new Audio('media/sounds/match.mp3'),
+    mismatch: new Audio('media/sounds/mismatch.mp3'),
+    win: new Audio('media/sounds/win.mp3'),
+}
+
 function startGame(difficulty) {
     let cardValues;
     switch (difficulty) {
@@ -52,6 +59,7 @@ function shuffleCards() {
 }
 
 function flipCard(event) {
+    playSound('flip');
     if (!timer) {
         timer = startTimer();
     }
@@ -70,14 +78,20 @@ function flipCard(event) {
 function checkForMatch() {
     const [card1, card2] = flippedCards;
     if (card1.dataset.value === card2.dataset.value) {
+        setTimeout(() => {
+            playSound('match');
+        }, 700);
         matchedPairs++;
         card1.classList.add('matched');
         card2.classList.add('matched');
         flippedCards = [];
         if (matchedPairs === cards.length / 2) {
-            endGame();
+            setTimeout(() => {
+                endGame();
+            }, 1000);
         }
     } else {
+        playSound('mismatch');
         setTimeout(() => {
             card1.classList.remove('flipped');
             card2.classList.remove('flipped');
@@ -100,6 +114,7 @@ function startTimer() {
 }
 
 function endGame() {
+    playSound('win');
     clearInterval(timer);
     document.getElementById('game-over-screen').classList.remove('hidden');
     document.getElementById('final-time').textContent = `Time: ${Math.floor(seconds / 60).toString().padStart(2, '0')} : ${(seconds % 60).toString().padStart(2, '0')}`;
@@ -124,6 +139,14 @@ function leaderBoardRender() {
         `;
         topScoresList.appendChild(row);
     });
+}
+
+function playSound(sound) {
+    if (localStorage.getItem('memory-game-sound') === 'false') {
+        return;
+    }
+    sounds[sound].currentTime = 0;
+    sounds[sound].play();
 }
 
 export { getCards, flipCard, startTimer, resetGameState };

@@ -49,6 +49,17 @@ body {
     color: var(--background-color);
 }
 
+#sound-toggle {
+    position: fixed;
+    top: 16px;
+    left: 20px;
+    z-index: 20;
+    padding: 8px 12px;
+    background-color: var(--background-color);
+    color: var(--font-color);
+    font-size: 1.5rem;
+}
+
 button {
     cursor: pointer;
     background-color: var(--primary-color);

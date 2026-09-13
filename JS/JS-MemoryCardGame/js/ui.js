@@ -23,6 +23,26 @@ function updateThemeToggle(themeToggle, isDarkMode) {
     themeToggle.setAttribute('aria-pressed', isDarkMode.toString());
 }
 
+function handleSoundToggle() {
+    const soundToggle = document.getElementById('sound-toggle');
+    const savedSoundSetting = localStorage.getItem('memory-game-sound');
+    const isSoundEnabled = savedSoundSetting !== 'false';
+
+    updateSoundToggle(soundToggle, isSoundEnabled);
+
+    soundToggle.addEventListener('click', function () {
+        const soundEnabled = localStorage.getItem('memory-game-sound') === 'false';
+        localStorage.setItem('memory-game-sound', soundEnabled.toString());
+        updateSoundToggle(soundToggle, soundEnabled);
+    });
+}
+
+function updateSoundToggle(soundToggle, isSoundEnabled) {
+    soundToggle.textContent = isSoundEnabled ? '🔊' : '🔇';
+    soundToggle.setAttribute('aria-label', `Turn ${isSoundEnabled ? 'off' : 'on'} sound`);
+    soundToggle.setAttribute('aria-pressed', isSoundEnabled.toString());
+}
+
 function validateName(name) {
     if (name.length < 2) {
         return false;
@@ -145,6 +165,6 @@ function handleGameOverButtons() {
 }
 
 
-
+handleSoundToggle();
 handleThemeToggle();
 startPage();
