@@ -13,6 +13,7 @@ body.dark-mode {
     --secondary-color: #f8ef03;
     --font-color: #f6e8f4;
     --background-color: #1e1720;
+    --background-darker-color: #1e1720;
     --background-matched-color: #54b83b;
 }
 
@@ -177,6 +178,10 @@ button:hover {
     font-weight: bold;
     transform-style: preserve-3d;
     transition: transform 0.5s ease-in-out, background-color 0.5s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-6px) scale(1.03);
 }
 
 .card::before {
