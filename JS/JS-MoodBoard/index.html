@@ -10,10 +10,25 @@
     <header>Essence</header>
 
     <main>
-        <section id="input-section"></section>
+        <section id="input-section">
+            <label for="mood-input">How are you feeling today?</label>
+            <div id="input-container">
+                <input type="text" id="mood-input" maxlength="200" placeholder="e.g., happy, sad, energetic">
+                <button id="generate-button">Generate Mood Board</button>
+            </div>
+            <div id="mood-chip-container">
+                <button class="mood-chip" data-mood="happy">Happy</button>
+                <button class="mood-chip" data-mood="anxious">Anxious</button>
+                <button class="mood-chip" data-mood="calm">Calm</button>
+                <button class="mood-chip" data-mood="excited">Excited</button>
+                <button class="mood-chip" data-mood="angry">Angry</button>
+            </div>
+        </section>
+
         <section id="result-section"></section>
     </main>
 
+    <script src="config.js" defer></script>
     <script src="script.js" defer></script>
 </body>
 </html>
