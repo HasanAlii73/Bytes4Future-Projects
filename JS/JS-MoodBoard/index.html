@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Essence</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="logo.svg" />
   </head>
   <body>
     <header>Essence</header>
@@ -30,10 +31,15 @@
         </div>
       </section>
 
-      <section id="result-section"></section>
-      <button id="regenerate-button" style="display: none">
-        Try Another
-      </button>
+      <section id="result-section">
+        <div id="result-card">
+          <button id="close-button" aria-label="Close">✕</button>
+          <div id="result-content"></div>
+          <button id="regenerate-button" style="display: none">
+            Try Another
+          </button>
+        </div>
+      </section>
       <div id="mood-history"></div>
     </main>
 

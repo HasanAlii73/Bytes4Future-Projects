@@ -63,8 +63,8 @@ main {
 }
 
 #input-section label {
-    font-size: 2.5rem;
-    font-weight: 900;
+    font-size: 3rem;
+    font-weight: 1000;
     color: var(--font-color);
     margin-bottom: 2rem;
 }
@@ -154,23 +154,56 @@ main {
 
 #result-section {
     display: none;
-    background-color: var(--bg-white);
-    border-radius: 20px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-    min-height: 300px;
-    flex-direction: column;
+    position: fixed;
+    inset: 0;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
-    gap: 1.25rem;
+    z-index: 1000;
     opacity: 0;
-    transform: translateY(10px);
     transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.6s ease;
 }
 
 #result-section.visible {
     opacity: 1;
-    transform: translateY(0);
+}
+
+#result-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    width: 100%;
+}
+
+#result-card {
+    position: relative;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 2.5rem 2rem 2rem;
+    max-width: 400px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+#close-button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.9rem;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: var(--font-color-light);
+    cursor: pointer;
+    line-height: 1;
+}
+
+#close-button:hover {
+    color: var(--font-color-light);
 }
 
 .spinner {
@@ -318,4 +351,17 @@ main {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+audio {
+    width: 100%;
+    max-width: 280px;
+    margin-top: 0.5rem;
+    background-color: var(--bg-color);
+}
+
+.track-info {
+    font-size: 0.85rem;
+    color: #777;
+    text-align: center;
 }
