@@ -62,9 +62,9 @@ async function fetchMoodQuote(mood) {
 }
 
 async function fetchMoodImage(mood) {
-    const response = await fetch(`https://api.unsplash.com/search/photos?query=${mood}&client_id=${UNSPLASH_ACCESS_KEY}`);
+    const response = await fetch(`https://api.unsplash.com/photos/random?query=${mood}&client_id=${UNSPLASH_ACCESS_KEY}`);
     const result = await response.json();
-    return result.results[0]?.urls.regular;
+    return result.urls?.regular;
 }
 //
 async function detectMoodFull(text) {
@@ -112,21 +112,29 @@ function renderHistory() {
         return;
     }
     moodHistoryContainer.innerHTML = `
-           <h3 class="history-title">Recent moods</h3>
-        <div class="history-strip">
+           <h3 id="history-title">Recent moods</h3>
+        <div class="history-strip" aria-hidden="true">
             ${history.map(item => `
                 <div class="history-card" style="background-color:${moodToColor[item.mood] || '#f5f5f5'}">
                     <img src="${item.imageUrl}" alt="${item.mood}" />
                     <p>${item.mood}</p>
                 </div>
             `).join("")}
-        </div>`
+        </div>`;
+    const historyTitle = document.getElementById("history-title");
+    const historyStrip = document.querySelector(".history-strip");
+    historyTitle.setAttribute("aria-expanded", "false");
+    historyTitle.addEventListener("click", () => {
+        const isOpen = historyStrip.classList.toggle("is-open");
+        historyStrip.setAttribute("aria-hidden", String(!isOpen));
+        historyTitle.setAttribute("aria-expanded", String(isOpen));
+    });
 }
 //
 async function generateResult(mood, breakdownHTML = "") {
-    resultSection.classList.remove("visible");
     resultSection.innerHTML = `<div class="spinner"></div>`;
     resultSection.style.display = "flex";
+    resultSection.classList.add("visible");
 
     const result = await fetchMoodQuote(mood);
     const imageQuery = moodToImageQuery[mood] || "calm minimal";
@@ -140,10 +148,6 @@ async function generateResult(mood, breakdownHTML = "") {
         <p class="quote-text">"${result.quote}" — ${result.author}</p>
         ${breakdownHTML}
     `;
-
-    // trigger fade-in (must force reflow before adding the class)
-    void resultSection.offsetWidth;
-    resultSection.classList.add("visible");
 
     saveToHistory({ mood, quote: result.quote, author: result.author, imageUrl });
 

@@ -1,3 +1,11 @@
+:root {
+    --bg-white: #ffffff;
+    --buttons-bg: #f0f0f0;
+    --button-hover-bg: #e0e0e0;
+    --font-color: #222;
+    --font-color-light: #555;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,8 +14,8 @@
 
 body {
     font-family:'Times New Roman', Times, serif;
-    background-color: #ffffff;
-    color: #222;
+    background-color: var(--bg-white);
+    color: var(--font-color);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -21,7 +29,7 @@ header {
     font-size: 1.7rem;
     font-weight: 600;
     letter-spacing: 1px;
-    color: #222;
+    color: var(--font-color);
     margin-bottom: 2rem;
 }
 
@@ -29,7 +37,7 @@ header::after {
     content: "Turn your feelings into art";
     display: block;
     font-size: 0.95rem;
-    color: #999;
+    color: var(--font-color-light);
     margin-top: 0.4rem;
     font-weight: normal;
     letter-spacing: normal;
@@ -57,7 +65,7 @@ main {
 #input-section label {
     font-size: 2.5rem;
     font-weight: 900;
-    color: #444;
+    color: var(--font-color);
     margin-bottom: 2rem;
 }
 
@@ -68,8 +76,8 @@ main {
     padding: 0.75rem 1rem;
     border-radius: 20px;
     border: 1px solid #ddd;
-    background: white;
-    color: #222;
+    background: var(--bg-white);
+    color: var(--font-color);
     font-size: 1rem;
 }
 
@@ -90,17 +98,20 @@ main {
     border-radius: 20px;
     border: 1px solid #ddd;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    background: white;
-    color: #222;
+    background: var(--bg-white);
+    color: var(--font-color);
     font-size: 1rem;
     cursor: pointer;
     width: 150px;
     margin-top: 0.5rem;
-    transition: background 0.2s, opacity 0.2s;
+    transition: background 0.2s, opacity 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 #generate-button:hover:not(:disabled) {
-    background: #b3b3b3;
+    background: var(--button-hover-bg);
+    border-color: #999;
+    transition: background 0.2s, opacity 0.2s, border-color 0.2s, transform 0.2s;
+    transform: translateY(-1px);
 }
 
 #generate-button:disabled {
@@ -119,17 +130,19 @@ main {
     padding: 0.4rem 1rem;
     border-radius: 999px;
     border: 1px solid #ddd;
-    background: #fafafa;
-    color: #444;
+    background: var(--bg-color);
+    color: var(--font-color);
     cursor: pointer;
     font-size: 0.9rem;
-    transition: background 0.2s, opacity 0.2s, border-color 0.2s;
+    transition: background 0.2s, opacity 0.2s, border-color 0.2s, transform 0.2s;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .mood-chip:hover:not(:disabled) {
-    background: #f0f0f0;
+    background: var(--button-hover-bg);
     border-color: #999;
+    transition: background 0.2s, opacity 0.2s, border-color 0.2s, transform 0.2s;
+    transform: translateY(-1px);
 }
 
 .mood-chip:disabled {
@@ -141,7 +154,7 @@ main {
 
 #result-section {
     display: none;
-    background-color: #ffffff;
+    background-color: var(--bg-white);
     border-radius: 20px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     min-height: 300px;
@@ -190,13 +203,13 @@ main {
 .emotion-label {
     width: 70px;
     text-transform: capitalize;
-    color: #555;
+    color: var(--font-color-light);
 }
 
 .emotion-bar-track {
     flex: 1;
     height: 8px;
-    background: #eee;
+    background: var(--buttons-bg);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -209,30 +222,49 @@ main {
 .emotion-score {
     width: 36px;
     text-align: right;
-    color: #777;
+    color: var(--font-color-light);
 }
 
 #regenerate-button {
     padding: 0.5rem 1.5rem;
     border-radius: 20px;
     border: 1px solid #ddd;
-    background: white;
+    background: var(--bg-color);
     cursor: pointer;
     font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.history-title {
+#history-title {
     font-size: 0.95rem;
-    color: #777;
+    color: var(--font-color-light);
     margin-bottom: 0.5rem;
     text-align: center;
+}
+
+#history-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .history-strip {
     display: flex;
     gap: 0.75rem;
     overflow-x: auto;
+    overflow-y: hidden;
     padding-bottom: 0.5rem;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    visibility: hidden;
+    transition: max-height 0.35s ease, opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
+}
+
+.history-strip.is-open {
+    max-height: 120px;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
 }
 
 .history-card {
@@ -241,6 +273,11 @@ main {
     border-radius: 10px;
     padding: 0.5rem;
     text-align: center;
+    transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.6s ease;
+}
+
+.history-card:hover {
+    transform: translateY(-2px);
 }
 
 .history-card img {
@@ -254,7 +291,7 @@ main {
     font-size: 0.75rem;
     text-transform: capitalize;
     margin-top: 0.25rem;
-    color: #444;
+    color: var(--font-color-light);
 }
 
 .mood-image {
@@ -265,11 +302,20 @@ main {
 }
 
 .quote-text {
-    color: #222;
+    color: var(--font-color);
     font-size: 1.15rem;
     text-align: center;
     line-height: 1.5;
     max-width: 90%;
     font-style: italic;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.quote-text, .mood-image {
+    animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
