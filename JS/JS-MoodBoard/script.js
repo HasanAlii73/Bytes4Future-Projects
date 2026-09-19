@@ -9,6 +9,8 @@ const resultContent = document.getElementById('result-content');
 const closeButton = document.getElementById('close-button');
 
 let lastMood = null;
+let currentPlaylist = [];
+let currentTrackIndex = 0;
 
 const moodToImageQuery = {
     joy: "happiness sunshine",
@@ -64,10 +66,9 @@ const moodToMusicTag = {
 
 async function fetchMoodMusic(mood) {
     const tag = moodToMusicTag[mood] || "chillout";
-    const response = await fetch(`https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_CLIENT_ID}&format=json&limit=1&tags=${tag}&audioformat=mp32`);
+    const response = await fetch(`https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_CLIENT_ID}&format=json&limit=20&tags=${tag}&audioformat=mp32`);
     const result = await response.json();
-    console.log(result.results);
-    return result.results[0];
+    return result.results || [];
 }
 
 async function fetchMoodQuote(mood) {
@@ -99,6 +100,35 @@ async function detectMoodFull(text) {
     );
     const result = await response.json();
     return result[0] || [{ label: 'neutral', score: 1 }]
+}
+
+function renderCurrentTrack() {
+    const musicPlayer = document.getElementById('music-player');
+    if (!musicPlayer) return;
+
+    if (currentPlaylist.length === 0) {
+        musicPlayer.innerHTML = `<p class="track-info">No matching tracks found</p>`;
+        return;
+    }
+
+    const track = currentPlaylist[currentTrackIndex];
+    musicPlayer.innerHTML = `
+        <audio controls autoplay src="${track.audio}"></audio>
+        <p class="track-info">🎵 ${track.name} — ${track.artist_name}</p>
+        <button id="shuffle-button"> Shuffle</button>
+    `;
+
+    document.getElementById('shuffle-button').addEventListener('click', shuffleTrack);
+}
+
+function shuffleTrack() {
+    if (currentPlaylist.length <= 1) return;
+    let newIndex;
+    do {
+        newIndex = Math.floor(Math.random() * currentPlaylist.length);
+    } while (newIndex === currentTrackIndex); // avoid repeating the same song twice in a row
+    currentTrackIndex = newIndex;
+    renderCurrentTrack();
 }
 
 function buildBreakdownHTML(emotionArray) {
@@ -150,6 +180,7 @@ function renderHistory() {
 }
 
 async function generateResult(mood, breakdownHTML = "") {
+    resultSection.style.backgroundColor = "rgba(0, 0, 0, 0.55)";
     resultContent.innerHTML = `<div class="spinner"></div>`;
     resultSection.style.display = "flex";
     resultSection.classList.add("visible");
@@ -157,7 +188,9 @@ async function generateResult(mood, breakdownHTML = "") {
     const result = await fetchMoodQuote(mood);
     const imageQuery = moodToImageQuery[mood] || "calm minimal";
     const imageUrl = await fetchMoodImage(imageQuery);
-    const track = await fetchMoodMusic(mood);
+
+    currentPlaylist = await fetchMoodMusic(mood);
+    currentTrackIndex = currentPlaylist.length > 0 ? Math.floor(Math.random() * currentPlaylist.length) : 0;
 
     resultSection.style.backgroundColor = moodToColor[mood] || "#ffffff";
 
@@ -165,11 +198,9 @@ async function generateResult(mood, breakdownHTML = "") {
         <img src="${imageUrl}" alt="Mood image" class="mood-image" />
         <p class="quote-text">"${result.quote}" — ${result.author}</p>
         ${breakdownHTML}
-        ${track ? `
-            <audio controls autoplay src="${track.audio}"></audio>
-            <p class="track-info">🎵 ${track.name} — ${track.artist_name}</p>
-        ` : `<p class="track-info">No matching track found</p>`}
-    `;
+        <div id="music-player"></div>`;
+
+    renderCurrentTrack();
 
     saveToHistory({ mood, quote: result.quote, author: result.author, imageUrl });
     lastMood = mood;
