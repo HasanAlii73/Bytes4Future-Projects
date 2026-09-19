@@ -55,7 +55,7 @@ let lastMood = null;
 async function fetchMoodQuote(mood) {
     const category = moodToQuoteCategory[mood] || "life";
     const response = await fetch(`https://api.api-ninjas.com/v2/randomquotes?categories=${category}`, {
-        headers: { 'X-Api-Key': `${NINJA_API_KEY}` } 
+        headers: { 'X-Api-Key': `${NINJA_API_KEY}` }
     });
     const result = await response.json();
     return result[0];
@@ -66,8 +66,8 @@ async function fetchMoodImage(mood) {
     const result = await response.json();
     return result.results[0]?.urls.regular;
 }
-
-async function detectMood(text) {
+//
+async function detectMoodFull(text) {
     const response = await fetch(
         "https://router.huggingface.co/hf-inference/models/j-hartmann/emotion-english-distilroberta-base",
         {
@@ -76,25 +76,79 @@ async function detectMood(text) {
                 Authorization: `Bearer ${HF_API_KEY}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ inputs: text }),
+            body: JSON.stringify({ inputs: text })
         }
     );
-
     const result = await response.json();
-    return result[0]?.[0]?.label || "neutral";
+    return result[0] || [{ label: 'neutral', score: 1 }]
 }
+//
+function buildBreakdownHTML(emotionArray) {
+    const top3 = emotionArray.slice(0, 3);
+    const rows = top3.map(e =>
+        `<div class="emotion-row">
+            <span class="emotion-label">${e.label}</span>
+            <div class="emotion-bar-track">
+                <div class="emotion-bar-fill" style="width:${Math.round(e.score * 100)}%"></div>
+            </div>
+            <span class="emotion-score">${Math.round(e.score * 100)}%</span>
+        </div>`
+    ).join("");
+    return `<div class="emotion-breakdown">${rows}</div>`;
+}
+//
+function saveToHistory(entry) {
+    const history = JSON.parse(localStorage.getItem('moodHistory') || '[]')
+    history.unshift(entry)
+    const trimmed = history.slice(0, 6);
+    localStorage.setItem('moodHistory', JSON.stringify(trimmed))
+    renderHistory();
+}
+//
+function renderHistory() {
+    const history = JSON.parse(localStorage.getItem('moodHistory') || '[]');
+    if (history.length === 0) {
+        moodHistoryContainer.innerHTML = "";
+        return;
+    }
+    moodHistoryContainer.innerHTML = `
+           <h3 class="history-title">Recent moods</h3>
+        <div class="history-strip">
+            ${history.map(item => `
+                <div class="history-card" style="background-color:${moodToColor[item.mood] || '#f5f5f5'}">
+                    <img src="${item.imageUrl}" alt="${item.mood}" />
+                    <p>${item.mood}</p>
+                </div>
+            `).join("")}
+        </div>`
+}
+//
+async function generateResult(mood, breakdownHTML = "") {
+    resultSection.classList.remove("visible");
+    resultSection.innerHTML = `<div class="spinner"></div>`;
+    resultSection.style.display = "flex";
 
-async function detectMoodFull(text) {
-    const response = await fetch(
-        "https://router.huggingface.co/hf-inference/models/j-hartmann/emotion-english-distilroberta-base",
-        {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${HF_API_KEY}`,
-                "Conten"
-            }
-        }
-    )
+    const result = await fetchMoodQuote(mood);
+    const imageQuery = moodToImageQuery[mood] || "calm minimal";
+    const imageUrl = await fetchMoodImage(imageQuery);
+
+    document.body.style.backgroundColor = moodToColor[mood] || "#ffffff";
+    resultSection.style.backgroundColor = moodToColor[mood] || "#ffffff";
+
+    resultSection.innerHTML = `
+        <img src="${imageUrl}" alt="Mood image" class="mood-image" />
+        <p class="quote-text">"${result.quote}" — ${result.author}</p>
+        ${breakdownHTML}
+    `;
+
+    // trigger fade-in (must force reflow before adding the class)
+    void resultSection.offsetWidth;
+    resultSection.classList.add("visible");
+
+    saveToHistory({ mood, quote: result.quote, author: result.author, imageUrl });
+
+    lastMood = mood;
+    regenerateButton.style.display = "inline-block";
 }
 
 async function fetchAndDisplay(mood, isTypedText = false) {
@@ -105,10 +159,13 @@ async function fetchAndDisplay(mood, isTypedText = false) {
         moodChips.forEach(chip => { chip.disabled = true; });
 
         let finalMood = mood;
+        let breakdownHTML = "";
 
         if (isTypedText) {
             try {
-                finalMood = await detectMood(mood);
+                const emotionArray = await detectMoodFull(mood);
+                finalMood = emotionArray[0]?.label || "neutral";
+                breakdownHTML = buildBreakdownHTML(emotionArray);
                 console.log(`Detected mood: ${finalMood}`);
             }
             catch (err) {
@@ -116,20 +173,7 @@ async function fetchAndDisplay(mood, isTypedText = false) {
                 finalMood = "calm";
             }
         }
-
-        const result = await fetchMoodQuote(finalMood);
-        const imageQuery = moodToImageQuery[finalMood] || "calm minimal";
-        const imageUrl = await fetchMoodImage(imageQuery);
-
-        resultSection.style.backgroundColor = moodToColor[finalMood] || "#ffffff";
-
-        document.body.style.backgroundColor = moodToColor[finalMood] || "#ffffff";
-
-        resultSection.innerHTML = `
-    <img src="${imageUrl}" alt="Mood image" class="mood-image" />
-    <p class="quote-text">"${result.quote}" — ${result.author}</p>
-`;
-        resultSection.style.display = "flex";
+        await generateResult(finalMood, breakdownHTML);
     }
     catch (err) {
         console.log(err);
@@ -157,4 +201,12 @@ moodChips.forEach(chip => {
     });
 });
 
-detectMood("Today my coach gave me a very hard project with two days deadline and my English teacher wants a presentation about it").then(console.log)
+regenerateButton.addEventListener('click', async () => {
+    if (!lastMood) return;
+    regenerateButton.disabled = true;
+    await generateResult(lastMood);
+    regenerateButton.disabled = false;
+});
+
+// detectMoodFull("Today my coach gave me a very hard project with two days deadline and my English teacher wants a presentation about it").then(console.log)
+renderHistory();
