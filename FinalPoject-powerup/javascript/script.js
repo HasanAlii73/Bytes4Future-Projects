@@ -2,6 +2,7 @@ const productContainer = document.getElementById('product-container');
 const searchInput = document.getElementById('search-input');
 const categorySelect = document.getElementById('category-select');
 const sortSelect = document.getElementById('sort-select');
+const paginationContainer = document.getElementById('pagination');
 
 let currentPageNumber = 1;
 const itemsPerPage = 16;
@@ -42,15 +43,46 @@ function getVisibleProducts() {
 function updateProducts() {
     const filteredList = getVisibleProducts();
 
-    const totalPages = filteredList.length / itemsPerPage;
-    const skip = ( currentPageNumber - 1 ) * itemsPerPage;
+    const totalPages = Math.ceil(filteredList.length / itemsPerPage);
+    const skip = (currentPageNumber - 1) * itemsPerPage;
 
     const pageItems = filteredList.slice(skip, skip + itemsPerPage);
     renderProducts(pageItems);
 
+    renderPagination(totalPages);
 }
 
+function renderPagination(totalPages) {
+    if (totalPages > 1) {
+        paginationContainer.style.display = 'block';
 
+        paginationContainer.innerHTML = `
+            <button id="prev-button" ${currentPageNumber === 1 ? 'disabled' : ''}>Previous</button>
+            <span>Page ${currentPageNumber} of ${Math.ceil(totalPages)}</span>
+            <button id="next-button" ${currentPageNumber === Math.ceil(totalPages) ? 'disabled' : ''}>Next</button>
+        `;
+
+        document.getElementById('prev-button').addEventListener('click', () => {
+            if (currentPageNumber > 1) {
+                currentPageNumber--;
+                updateProducts();
+                window.scrollTo(0, 0);
+            }
+        });
+        
+        document.getElementById('next-button').addEventListener('click', () => {
+            if (currentPageNumber < Math.ceil(totalPages)) {
+                currentPageNumber++;
+                updateProducts();
+                window.scrollTo(0, 0);
+            }
+        });
+    } else {
+        paginationContainer.style.display = 'none';
+    }
+
+
+}
 
 function mainEventListeners() {
     categorySelect.addEventListener('change', function () {
@@ -92,11 +124,14 @@ function renderProducts(list) {
     productContainer.innerHTML = list.map(product => {
         const priceInfo = getPriceInfo(product);
         return `<div class="product">
+          <a href='produsct.html?id=${product.id}'>
             <img src="${product.thumbnail}" alt="${product.title}"/>
             <h2>${product.title}</h2>
-            <p>Price: ${priceInfo.price.toFixed(2)}$</p>
-            ${product.discountPercentage>0 ? `<p>Discount: ${product.discountPercentage.toFixed(2)}%</p>` : ''}
-            ${product.discountPercentage>0 ? `<p>Final Price: ${priceInfo.finalPrice.toFixed(2)}$</p>` : ''}
+          </a>
+            <p>Price:
+            <p>Price: $${priceInfo.price.toFixed(2)}</p>
+            ${product.discountPercentage > 0 ? `<p>Discount: ${product.discountPercentage.toFixed(2)}%</p>` : ''}
+            ${product.discountPercentage > 0 ? `<p>Final Price: $${priceInfo.finalPrice.toFixed(2)}</p>` : ''}
         </div>`;
     }).join('');
 }
