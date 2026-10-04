@@ -70,7 +70,6 @@ async function fetchMoodMusic(mood) {
     const result = await response.json();
     return result.results || [];
 }
-
 async function fetchMoodQuote(mood) {
     const category = moodToQuoteCategory[mood] || "life";
     const response = await fetch(`https://api.api-ninjas.com/v2/randomquotes?categories=${category}`, {
@@ -79,13 +78,11 @@ async function fetchMoodQuote(mood) {
     const result = await response.json();
     return result[0];
 }
-
 async function fetchMoodImage(mood) {
     const response = await fetch(`https://api.unsplash.com/photos/random?query=${mood}&client_id=${UNSPLASH_ACCESS_KEY}`);
     const result = await response.json();
     return result.urls?.regular;
 }
-
 async function detectMoodFull(text) {
     const response = await fetch(
         "https://router.huggingface.co/hf-inference/models/j-hartmann/emotion-english-distilroberta-base",
@@ -126,7 +123,7 @@ function shuffleTrack() {
     let newIndex;
     do {
         newIndex = Math.floor(Math.random() * currentPlaylist.length);
-    } while (newIndex === currentTrackIndex); // avoid repeating the same song twice in a row
+    } while (newIndex === currentTrackIndex);
     currentTrackIndex = newIndex;
     renderCurrentTrack();
 }
@@ -152,7 +149,6 @@ function saveToHistory(entry) {
     localStorage.setItem('moodHistory', JSON.stringify(trimmed))
     renderHistory();
 }
-
 function renderHistory() {
     const history = JSON.parse(localStorage.getItem('moodHistory') || '[]');
     if (history.length === 0) {
@@ -180,7 +176,7 @@ function renderHistory() {
 }
 
 async function generateResult(mood, breakdownHTML = "") {
-    resultSection.style.backgroundColor = "rgba(0, 0, 0, 0.55)";
+    resultSection.style.backgroundColor = "rgb(255, 255, 255)";
     resultContent.innerHTML = `<div class="spinner"></div>`;
     resultSection.style.display = "flex";
     resultSection.classList.add("visible");
