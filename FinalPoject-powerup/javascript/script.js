@@ -5,6 +5,8 @@ const sortSelect = document.getElementById('sort-select');
 const paginationContainer = document.getElementById('pagination');
 const cartButton = document.querySelector('.cartButton');
 const checkoutButton = document.querySelector('.ordersButton')
+const favoritesFilter = document.getElementById('favorites-filter');
+let showFavoritesOnly = new URLSearchParams(window.location.search).get('favorites') === '1';
 
 let currentPageNumber = 1;
 const itemsPerPage = 16;
@@ -25,7 +27,8 @@ function getVisibleProducts() {
     return allProducts.filter(product => {
         const matchesSearchText = product.title.toLowerCase().includes(searchText.trim().toLowerCase());
         const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-        return matchesSearchText && matchesCategory;
+        const matchesFavorites = !showFavoritesOnly || isFavorite(product.id);
+        return matchesSearchText && matchesCategory && matchesFavorites;
     }).sort((a, b) => {
         const aPriceInfo = getPriceInfo(a);
         const bPriceInfo = getPriceInfo(b);
@@ -39,6 +42,9 @@ function updateProducts() {
     const filteredList = getVisibleProducts();
 
     const totalPages = Math.ceil(filteredList.length / itemsPerPage);
+
+    if (currentPageNumber > totalPages) currentPageNumber = Math.max(totalPages, 1);
+
     const skip = (currentPageNumber - 1) * itemsPerPage;
 
     const pageItems = filteredList.slice(skip, skip + itemsPerPage);
@@ -64,7 +70,7 @@ function renderPagination(totalPages) {
                 window.scrollTo(0, 0);
             }
         });
-        
+
         document.getElementById('next-button').addEventListener('click', () => {
             if (currentPageNumber < Math.ceil(totalPages)) {
                 currentPageNumber++;
@@ -98,13 +104,26 @@ function mainEventListeners() {
         updateProducts();
     });
 
-    cartButton.addEventListener('click', () => {
-        window.location.href = 'cart.html';
-    })
-
-    checkoutButton.addEventListener('click', () => {
-        window.location.href = 'checkout.html';
+    favoritesFilter.addEventListener('change', function () {
+        showFavoritesOnly = favoritesFilter.checked;
+        currentPageNumber = 1;
+        updateProducts();
     });
+
+    productContainer.addEventListener('click', function (event) {
+        const heart = event.target.closest('.favorite-button');
+        if (!heart) return;
+
+        const isFav = toggleFavorite(heart.dataset.id);
+
+        if (showFavoritesOnly) {
+            updateProducts();
+        } else {
+            updateHeart(heart, isFav);
+        }
+    });
+
+    navEventListners();
 }
 
 function fillCategories(products) {
@@ -120,13 +139,19 @@ function fillCategories(products) {
 
 function renderProducts(list) {
     if (list.length === 0) {
-        productContainer.innerHTML = 'No products match your search.';
+        productContainer.innerHTML = showFavoritesOnly
+            ? 'No favorites to show. Click the heart on a product to save it.'
+            : 'No products match your search.';
         return;
     }
 
     productContainer.innerHTML = list.map(product => {
         const priceInfo = getPriceInfo(product);
+        const fav = isFavorite(product.id);
+
         return `<div class="product">
+        <button class="favorite-button ${fav ? 'active' : ''}" data-id="${product.id}"
+            aria-pressed="${fav}" aria-label="${fav ? 'Remove from favorites' : 'Add to favorites'}">${fav ? '♥' : '♡'}</button>
           <a href='product.html?id=${product.id}'>
             <img src="${product.thumbnail}" alt="${product.title}"/>
             <h2>${product.title}</h2>
@@ -138,8 +163,16 @@ function renderProducts(list) {
     }).join('');
 }
 
+function updateHeart(heart, isFav) {
+    heart.classList.toggle('active', isFav);
+    heart.setAttribute('aria-pressed', isFav);
+    heart.setAttribute('aria-label', isFav ? 'Remove from favorites' : 'Add to favorites');
+    heart.textContent = isFav ? '♥' : '♡';
+}
+
 async function start() {
     productContainer.innerHTML = 'Loading products...';
+    favoritesFilter.checked = showFavoritesOnly;
 
     try {
         allProducts = await fetchAllProduct();

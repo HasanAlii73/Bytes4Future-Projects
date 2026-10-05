@@ -60,5 +60,10 @@ cartContainer.addEventListener('click', event => {
  
     renderCart();
 });
- 
-renderCart();
+
+function init() {
+    renderCart()
+    navEventListners()
+}
+
+init();

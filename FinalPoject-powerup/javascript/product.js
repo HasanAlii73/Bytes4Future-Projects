@@ -8,6 +8,7 @@ function init() {
     }
 
     fetchProduct(id);
+    navEventListners();
     return;
 }
 

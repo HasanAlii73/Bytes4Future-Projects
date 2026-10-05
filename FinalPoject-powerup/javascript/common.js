@@ -6,21 +6,21 @@ function getPriceInfo(product) {
 }
 
 function getFromStorage(key, fallback) {
-    try{   
+    try {
         const value = localStorage.getItem(key);
         return value !== null ? JSON.parse(value) : fallback;
     }
-    catch(error){
+    catch (error) {
         console.error(error);
         return fallback;
     }
 }
 
 function saveToStorage(key, value) {
-    try{
+    try {
         localStorage.setItem(key, JSON.stringify(value));
     }
-    catch(error){
+    catch (error) {
         console.error(error);
     }
 }
@@ -111,3 +111,42 @@ function clearCart() {
     saveToStorage('cart', []);
     updateCartBadge();
 }
+
+function getTheme() {
+    const saved = getFromStorage('theme', null);
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+
+    const button = document.querySelector('.darkLightToggle');
+    if (button) button.textContent = theme === 'dark' ? '☼' : '☾';
+}
+
+function toggleTheme() {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    saveToStorage('theme', next);
+    applyTheme(next);
+}
+
+function navEventListners() {
+    const cartButton = document.querySelector('.cartButton');
+    const checkoutButton = document.querySelector('.ordersButton');
+
+    cartButton.addEventListener('click', () => {
+        window.location.href = 'cart.html';
+    })
+
+    checkoutButton.addEventListener('click', () => {
+        window.location.href = 'checkout.html';
+    });
+}
+
+applyTheme(getTheme());
+
+document.addEventListener('DOMContentLoaded', () => {
+    applyTheme(getTheme()); // the header exists now, so the button label gets set too
+    document.querySelector('.darkLightToggle')?.addEventListener('click', toggleTheme);
+});

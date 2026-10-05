@@ -15,12 +15,13 @@
       </div>
       <nav class="navContainer">
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Products/Catalog</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html">Products/Catalog</a></li>
+          <li><a href="checkout.html">Orders</a></li>
+          <li><a href="index.html?favorites=1">Favorites</a></li>
         </ul>
       </nav>
-      <input id="search-input" type="text" placeholder="Search products, brands, essintials..." />
+      <input id="search-input" type="text" placeholder="Search products, brands, essintials..." aria-label="Search products"/>
       <div class="headerButtons">
         <button class="darkLightToggle">Dark/Light</button>
         <button class="cartButton">Cart</button>
@@ -29,14 +30,15 @@
     </header>
 
     <main>
-      <select name="category" id="category-select">
+      <select name="category" id="category-select" aria-label="Category">
         <option value="all">All Categories</option>
       </select>
-      <select name="sort" id="sort-select">
+      <select name="sort" id="sort-select" aria-label="Sort products">
         <option value="default">Sort By: Default</option>
         <option value="priceLowToHigh">Price: Low to High</option>
         <option value="priceHighToLow">Price: High to Low</option>
       </select>
+      <label><input type="checkbox" id="favorites-filter"> Favorites only</label>
       <div id="product-container"></div>
       <div id="pagination"></div>
     </main>

@@ -172,5 +172,10 @@ function renderOrders() {
     `).join('');
 }
 
-renderCheckout();
-renderOrders();
+function init() {
+    renderCheckout();
+    renderOrders();
+    navEventListners();
+}
+
+init();
