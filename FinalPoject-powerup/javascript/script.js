@@ -4,6 +4,7 @@ const categorySelect = document.getElementById('category-select');
 const sortSelect = document.getElementById('sort-select');
 const paginationContainer = document.getElementById('pagination');
 const cartButton = document.querySelector('.cartButton');
+const checkoutButton = document.querySelector('.ordersButton')
 
 let currentPageNumber = 1;
 const itemsPerPage = 16;
@@ -100,6 +101,10 @@ function mainEventListeners() {
     cartButton.addEventListener('click', () => {
         window.location.href = 'cart.html';
     })
+
+    checkoutButton.addEventListener('click', () => {
+        window.location.href = 'checkout.html';
+    });
 }
 
 function fillCategories(products) {
