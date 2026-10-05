@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ShopFlow</title>
+    <title>Welcome - ShopFlow</title>
     <link rel="icon" type="image/svg+xml" href="media/logo.svg" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -16,12 +16,11 @@
       <nav class="navContainer">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="index.html">Products/Catalog</a></li>
+          <li><a href="shop.html">Products/Catalog</a></li>
           <li><a href="checkout.html">Orders</a></li>
-          <li><a href="index.html?favorites=1">Favorites</a></li>
+          <li><a href="shop.html?favorites=1">Favorites</a></li>
         </ul>
       </nav>
-      <input id="search-input" type="text" placeholder="Search products, brands, essintials..." aria-label="Search products"/>
       <div class="headerButtons">
         <button class="darkLightToggle">Dark/Light</button>
         <button class="cartButton">Cart</button>
@@ -29,21 +28,28 @@
       </div>
     </header>
 
-    <main>
-      <select name="category" id="category-select" aria-label="Category">
-        <option value="all">All Categories</option>
-      </select>
-      <select name="sort" id="sort-select" aria-label="Sort products">
-        <option value="default">Sort By: Default</option>
-        <option value="priceLowToHigh">Price: Low to High</option>
-        <option value="priceHighToLow">Price: High to Low</option>
-      </select>
-      <label><input type="checkbox" id="favorites-filter"> Favorites only</label>
-      <div id="product-container"></div>
-      <div id="pagination"></div>
+    <main class="intro-main">
+      <section class="intro-card">
+        <div class="logo intro-logo">
+          <img src="media/logo.svg" alt="ShopFlow Logo" />
+          ShopFlow
+        </div>
+        <h1>Welcome to ShopFlow</h1>
+        <p>
+          Discover what you love, shop with ease, and let every purchase flow.
+        </p>
+        
+        <a class="intro-start" href="shop.html">Start shopping</a>
+        <div class="intro-contacts">
+          <p><strong>Phone:</strong> +1 (555) 214-8890</p>
+          <p><strong>Email:</strong> support@shopflow.example</p>
+        </div>
+      </section>
     </main>
 
     <script src="javascript/common.js"></script>
-    <script src="javascript/script.js"></script>
+    <script>
+      navEventListners();
+    </script>
   </body>
 </html>

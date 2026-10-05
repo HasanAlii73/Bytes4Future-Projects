@@ -646,6 +646,66 @@ main > label {
   font-size: 0.9rem;
 }
 
+/* Intro page */
+.intro-main {
+  min-height: calc(100vh - 84px);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.intro-card {
+  width: min(680px, 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: clamp(1.2rem, 3vw, 2rem);
+  text-align: center;
+}
+
+.intro-logo {
+  justify-content: center;
+  margin-bottom: 0.85rem;
+}
+
+.intro-card p {
+  margin: 0.8rem auto 1.4rem;
+  max-width: 58ch;
+}
+
+.intro-contacts {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.intro-contacts p {
+  margin: 0.35rem 0;
+}
+
+.intro-contacts strong {
+  color: var(--text);
+}
+
+.intro-start {
+  display: inline-block;
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.66rem 1rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.intro-start:hover {
+  transform: translateY(-2px);
+  background: var(--primary-dark);
+  color: var(--on-primary);
+}
+
 /* Responsive layout */
 @media (max-width: 850px) {
   header {

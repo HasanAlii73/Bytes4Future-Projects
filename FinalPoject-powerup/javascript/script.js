@@ -9,7 +9,7 @@ const favoritesFilter = document.getElementById('favorites-filter');
 let showFavoritesOnly = new URLSearchParams(window.location.search).get('favorites') === '1';
 
 let currentPageNumber = 1;
-const itemsPerPage = 16;
+const itemsPerPage = 20;
 let allProducts = [];
 let searchText = '', selectedCategory = 'all', sortBy = '';
 

@@ -64,7 +64,7 @@ function renderCheckout() {
     if (cart.length === 0) {
         checkoutContainer.innerHTML = `
             <p>Your cart is empty.</p>
-            <a href="index.html">Browse products</a>`;
+            <a href="shop.html">Browse products</a>`;
         return;
     }
 
@@ -142,7 +142,7 @@ function placeOrder(customer) {
         <div class="order-success">
             <h2>Thank you, ${escapeHtml(customer.name)}!</h2>
             <p>Your order <strong>${order.id}</strong> was placed. Total: $${order.total.toFixed(2)}.</p>
-            <a href="index.html">Continue shopping</a>
+            <a href="shop.html">Continue shopping</a>
         </div>`;
 
     renderOrders();

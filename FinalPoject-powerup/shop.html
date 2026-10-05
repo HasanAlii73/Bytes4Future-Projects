@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ShopFlow</title>
-    <link rel="icon" type="image/svg+xml" href="../media/logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="media/logo.svg" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -21,6 +21,7 @@
           <li><a href="shop.html?favorites=1">Favorites</a></li>
         </ul>
       </nav>
+      <input id="search-input" type="text" placeholder="Search products, brands, essintials..." aria-label="Search products"/>
       <div class="headerButtons">
         <button class="darkLightToggle">Dark/Light</button>
         <button class="cartButton">Cart</button>
@@ -29,10 +30,20 @@
     </header>
 
     <main>
-      <div id="product-details"></div>
+      <select name="category" id="category-select" aria-label="Category">
+        <option value="all">All Categories</option>
+      </select>
+      <select name="sort" id="sort-select" aria-label="Sort products">
+        <option value="default">Sort By: Default</option>
+        <option value="priceLowToHigh">Price: Low to High</option>
+        <option value="priceHighToLow">Price: High to Low</option>
+      </select>
+      <label><input type="checkbox" id="favorites-filter"> Favorites only</label>
+      <div id="product-container"></div>
+      <div id="pagination"></div>
     </main>
 
     <script src="javascript/common.js"></script>
-    <script src="javascript/product.js"></script>
+    <script src="javascript/script.js"></script>
   </body>
 </html>

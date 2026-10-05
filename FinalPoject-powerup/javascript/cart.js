@@ -4,7 +4,7 @@ function renderCart() {
     const cart = getCart();
     if (cart.length === 0) {
         cartContainer.innerHTML = `<p>Your cart is still empty</p>
-        <button onclick="window.location.href='index.html'">Browse Products</button>`;
+        <button onclick="window.location.href='shop.html'">Browse Products</button>`;
         return;
     }
 
