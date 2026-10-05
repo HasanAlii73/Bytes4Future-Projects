@@ -3,6 +3,7 @@ const searchInput = document.getElementById('search-input');
 const categorySelect = document.getElementById('category-select');
 const sortSelect = document.getElementById('sort-select');
 const paginationContainer = document.getElementById('pagination');
+const cartButton = document.querySelector('.cartButton');
 
 let currentPageNumber = 1;
 const itemsPerPage = 16;
@@ -17,13 +18,6 @@ async function fetchAllProduct() {
     }
     const data = await res.json();
     return data.products;
-}
-
-function getPriceInfo(product) {
-    const price = product.price;
-    const discountPercentage = product.discountPercentage;
-    const finalPrice = price * (1 - discountPercentage / 100);
-    return { price, discountPercentage: discountPercentage, finalPrice };
 }
 
 function getVisibleProducts() {
@@ -102,6 +96,10 @@ function mainEventListeners() {
         currentPageNumber = 1;
         updateProducts();
     });
+
+    cartButton.addEventListener('click', () => {
+        window.location.href = 'cart.html';
+    })
 }
 
 function fillCategories(products) {
@@ -124,11 +122,10 @@ function renderProducts(list) {
     productContainer.innerHTML = list.map(product => {
         const priceInfo = getPriceInfo(product);
         return `<div class="product">
-          <a href='produsct.html?id=${product.id}'>
+          <a href='product.html?id=${product.id}'>
             <img src="${product.thumbnail}" alt="${product.title}"/>
             <h2>${product.title}</h2>
           </a>
-            <p>Price:
             <p>Price: $${priceInfo.price.toFixed(2)}</p>
             ${product.discountPercentage > 0 ? `<p>Discount: ${product.discountPercentage.toFixed(2)}%</p>` : ''}
             ${product.discountPercentage > 0 ? `<p>Final Price: $${priceInfo.finalPrice.toFixed(2)}</p>` : ''}

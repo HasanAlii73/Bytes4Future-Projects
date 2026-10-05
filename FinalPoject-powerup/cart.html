@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ShopFlow</title>
+    <title>Cart</title>
     <link rel="icon" type="image/svg+xml" href="media/logo.svg" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -29,19 +29,10 @@
     </header>
 
     <main>
-      <select name="category" id="category-select">
-        <option value="all">All Categories</option>
-      </select>
-      <select name="sort" id="sort-select">
-        <option value="default">Sort By: Default</option>
-        <option value="priceLowToHigh">Price: Low to High</option>
-        <option value="priceHighToLow">Price: High to Low</option>
-      </select>
-      <div id="product-container"></div>
-      <div id="pagination"></div>
+      <div id="cart"></div>
     </main>
 
     <script src="javascript/common.js"></script>
-    <script src="javascript/script.js"></script>
+    <script src="javascript/cart.js"></script>
   </body>
 </html>
