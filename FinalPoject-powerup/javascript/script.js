@@ -6,8 +6,8 @@ const paginationContainer = document.getElementById('pagination');
 const cartButton = document.querySelector('.cartButton');
 const checkoutButton = document.querySelector('.ordersButton')
 const favoritesFilter = document.getElementById('favorites-filter');
-let showFavoritesOnly = new URLSearchParams(window.location.search).get('favorites') === '1';
 
+let showFavoritesOnly = new URLSearchParams(window.location.search).get('favorites') === '1';
 let currentPageNumber = 1;
 const itemsPerPage = 20;
 let allProducts = [];
@@ -85,7 +85,7 @@ function renderPagination(totalPages) {
 
 }
 
-function mainEventListeners() {
+function mainEventListeners() { 
     categorySelect.addEventListener('change', function () {
         selectedCategory = categorySelect.value;
         currentPageNumber = 1;

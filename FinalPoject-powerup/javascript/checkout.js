@@ -1,10 +1,7 @@
 const checkoutContainer = document.getElementById('checkout');
 const ordersContainer = document.getElementById('orders');
 
-/* helpers */
 
-// Anything the user types and we later show with innerHTML must be escaped,
-// otherwise a name like <img onerror=...> would run as code.
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
@@ -25,8 +22,6 @@ function formField(name, label, type = 'text') {
         </div>`;
 }
 
-/* validation: each rule returns an error message, or '' when the value is fine */
-
 const validators = {
     name: value => value.length >= 2 ? '' : 'Enter your full name (at least 2 characters).',
     email: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Enter a valid email address.',
@@ -35,7 +30,6 @@ const validators = {
     city: value => value.length >= 2 ? '' : 'Enter your city.'
 };
 
-// Returns the customer data when everything is valid, otherwise null.
 function validateForm(form) {
     const customer = {};
     let valid = true;
@@ -55,8 +49,6 @@ function validateForm(form) {
     customer.payment = form.elements.payment.value;
     return valid ? customer : null;
 }
-
-/* checkout section */
 
 function renderCheckout() {
     const cart = getCart();
@@ -100,7 +92,6 @@ function renderCheckout() {
     `;
 }
 
-// One listener on the container: the form is rebuilt by renderCheckout().
 checkoutContainer.addEventListener('submit', event => {
     event.preventDefault();
 
@@ -112,7 +103,6 @@ checkoutContainer.addEventListener('submit', event => {
         return;
     }
 
-    // Fake payment: disable the button so the order can't be sent twice.
     const button = document.getElementById('place-order');
     button.disabled = true;
     button.textContent = 'Processing...';
@@ -147,8 +137,6 @@ function placeOrder(customer) {
 
     renderOrders();
 }
-
-/* previous orders section */
 
 function renderOrders() {
     const orders = getOrders();

@@ -24,6 +24,7 @@ function saveToStorage(key, value) {
         console.error(error);
     }
 }
+
 function getFavorites() {
     return getFromStorage('favorites', []);
 }
